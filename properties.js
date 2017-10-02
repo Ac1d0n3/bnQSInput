@@ -95,6 +95,18 @@ function ( qlik, $, $dict, $q) {
 					return data.oType === "v" || data.oType === undefined;
 				}
 			},
+			namelabel1:{
+				ref: "namelabel1",
+				label: $dict[lang].NameLabel + ' 1',
+				type: "string",
+				expression: "optional",
+				change: function(data) {
+					
+				},
+				show: function(data) {
+					return data.rType !== "c";
+				}
+			},
 			name2: {
 				ref: "var2",
 				label: $dict[lang].VariableName +" 2:",
@@ -111,6 +123,18 @@ function ( qlik, $, $dict, $q) {
 				},
 				show: function(data) {
 					return (data.oType === "v" || data.oType === undefined)  && data.sType === 'r' ;
+				}
+			},
+			namelabel2:{
+				ref: "namelabel2",
+				label: $dict[lang].NameLabel + ' 2',
+				type: "string",
+				expression: "optional",
+				change: function(data) {
+					
+				},
+				show: function(data) {
+					return (data.oType === "v" || data.oType === undefined)  && data.sType === 'r' 
 				}
 			},
 			field: {
@@ -150,6 +174,10 @@ function ( qlik, $, $dict, $q) {
 				{
 					value: "c",
 					label: $dict[lang].commaStr
+				},
+				{
+					value: "o",
+					label: $dict[lang].ownExpression
 				}],
 				defaultValue: "f"
 			},
@@ -508,10 +536,96 @@ function ( qlik, $, $dict, $q) {
 		type: "items",
 		label: $dict[lang].astyle,
 		items: {
+			showLabels: {
+				type: "boolean",
+				component: "switch",
+				label: $dict[lang].showLabels,
+				ref: "showvarlabels",
+				options: [{
+					value: true,
+					label: $dict[lang].On
+				}, {
+					value: false,
+					label: $dict[lang].Off
+				}],
+				change: function(data) {
+				
+				},
+				show: function(data) {
+					return data.rType !== "c";
+				},
+				defaultValue: true
+				
+			},
+			LabelsBold: {
+				type: "boolean",
+				component: "switch",
+				label: $dict[lang].showLabelsBold,
+				ref: "labelsbold",
+				options: [{
+					value: true,
+					label: $dict[lang].On
+				}, {
+					value: false,
+					label: $dict[lang].Off
+				}],
+				change: function(data) {
+				
+				},
+				show: function(data) {
+					return data.showvarlabels === true;
+				},
+				defaultValue: true
+				
+			},
+			ownWidth: {
+				type: "boolean",
+				component: "switch",
+				label: $dict[lang].ownWidth,
+				ref: "ownwidth",
+				options: [{
+					value: true,
+					label: $dict[lang].On
+				}, {
+					value: false,
+					label: $dict[lang].Off
+				}],
+				change: function(data) {
+				
+				},
+				show: function(data) {
+					return data.rType !== "c";
+				},
+				defaultValue: true
+				
+			},
+			labelWidth: {
+				ref: "labelwidth",
+				label: $dict[lang].maxWidthLabel,
+				type: "string",
+				change: function(data) {
+				  
+				},
+				show: function(data) {
+					return data.showvarlabels === true &&  data.ownwidth === true;
+				}
+			},
+			objectWidth: {
+				ref: "objectwidth",
+				label: $dict[lang].objectWidth,
+				type: "string",
+				change: function(data) {
+				  
+				},
+				show: function(data) {
+					return  data.ownwidth === true;
+				}
+			},
+			
 			styleType: {
 				type: "string",
 				component: "dropdown",
-				
+				label:  $dict[lang].styleType,
 				ref: "styleType",
 				options: [{
 					value: "a",

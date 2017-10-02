@@ -10,27 +10,27 @@ function ( qlik, props, initProps, bnHelper, $) {
             bnHelper.addStyleSheet("extensions/bnQSInput/style.css");
 			$element.empty(); $element.append('<div>');
 			var $output = $(bnHelper.createElement('div', 'bnContainer'));
+			$output.append( bnHelper.createLabel(layout) );
 			switch (layout.rType) {
 				case 'a':
 					var $input = bnHelper.createInput(layout);
-					$output.html($input);
+					$output.append($input);
 				break;
 				case 'b':
 					var $select = bnHelper.createSelect(layout);
-					$output.html($select);
+					$output.append($select);
 				break;
 				case 'c':
 					var $button = bnHelper.createButton(layout);
-					$output.html($button);
+					$output.append($button);
 				break;
 				case 'd':
-					var $slider = $(bnHelper.createElement('div', 'bnSliderDiv')).slider(bnHelper.createSlider(layout));
-					$slider.find('span').addClass('bnSliderHandle');
-					$output.html($slider);
+					var $slider = bnHelper.createSlider(layout);
+					$output.append($slider);
 				break;
 				case 'e':
 					var $calBox = bnHelper.createCalBox(layout);
-					$output.html($calBox);
+					$output.append($calBox);
 					
 				break;
 			}

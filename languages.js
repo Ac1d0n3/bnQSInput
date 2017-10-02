@@ -46,8 +46,15 @@ define( [], function () {
 			restrictDate: "Datum einschrängen",
 			restrictSample: "nutze -10 oder -2M 10D oder +1M 5D oder +10",
 			rdMin:"Min Datum",
-			rdMax: "Max Datum"
-			
+			rdMax: "Max Datum",
+			NameLabel: "Bezeichnung für Variable",
+			showLabels: "zeige Bezeichnungen",
+			styleType: "Farben aus Vorlage / Hex",
+			ownExpression: "Eigene Formel",
+			showLabelsBold: "Bezeichnungen in fett",
+			maxWidthLabel: "breite für das Label",
+			ownWidth: "eigene Breitenangaben",
+			objectWidth: "Objekt Breite"
 			
 		},
 		'US':{
@@ -94,6 +101,10 @@ define( [], function () {
 			restrictSample: "use -10 or -2M 10D or +1M 5D or +10",
 			rdMin:"Min Date",
 			rdMax: "Max Date",
+			NameLabel: "Bezeichnung für das Label",
+			showLabels: "zeige Bezeichnungen",
+			styleType: "Own Expression",
+			showLabelsBold: "Bezeichnungen in fett"
 		}
     }
 	

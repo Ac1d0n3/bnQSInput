@@ -24,7 +24,23 @@ function ( qlik, $) {
         } else { app.variable.create(name); }
     }
 	
-	function createSlider(layout,ext){
+	function createLabel(layout){
+		if(layout.showvarlabels === true){
+			
+			switch (layout.rType){
+				
+				default:
+				var $label = $(createElement('label','bnLabel'));
+					$($label).html(layout.namelabel1);
+					return $label;
+				break; 
+				
+			}
+			
+		} else return '';
+	}
+	
+	function createSlider(layout){
 		switch (layout.sType){
 			case 's':
 				var sliderSettings = { 
@@ -52,7 +68,10 @@ function ( qlik, $) {
 				};
 			break;
 		}	
-		return sliderSettings;
+		var $slider = $(createElement('div', 'bnSliderDiv')).slider(sliderSettings);
+		$slider.find('span').addClass('bnSliderHandle');
+		
+		return $slider;
 	}
 	
 	function createInput(layout){
@@ -161,6 +180,7 @@ function ( qlik, $) {
         createElement: createElement
         , setChild: setChild
         , addStyleSheet: addStyleSheet
+		, createLabel: createLabel
 		, createSlider: createSlider
         , createVariable: createVariable
 		, createInput: createInput
