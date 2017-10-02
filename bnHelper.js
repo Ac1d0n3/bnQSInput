@@ -25,17 +25,24 @@ function ( qlik, $) {
     }
 	
 	function createLabel(layout){
-		if(layout.showvarlabels === true){
+		
+		if(layout.showvarlabels === true && layout.rType !== 'c'){
+			var nClass;
+			layout.labelsbold === true ? nClass = 'bnLabel bnbold': nClass = 'bnLabel';
+			var $label = $(createElement('label',nClass));
 			
-			switch (layout.rType){
-				
-				default:
-				var $label = $(createElement('label','bnLabel'));
-					$($label).html(layout.namelabel1);
-					return $label;
-				break; 
-				
+			if(layout.ownwidth === true && layout.labelwidth != '') $($label).css('width',layout.objectwidth);
+		
+			if(layout.rType === 'd'){
+				if(layout.sType === 'r'){
+					$($label).html(layout.namelabel1 + ': ' + layout.var1Value + ' ' + layout.namelabel2 + ': ' + layout.var2Value );
+				} else {
+					$($label).html(layout.namelabel1 + ': ' + layout.var1Value  );
+				}
+			} else {
+				$($label).html(layout.namelabel1);
 			}
+			return $label;
 			
 		} else return '';
 	}
@@ -69,6 +76,9 @@ function ( qlik, $) {
 			break;
 		}	
 		var $slider = $(createElement('div', 'bnSliderDiv')).slider(sliderSettings);
+		if(layout.showvarlabels === true){
+			$($slider).css('margin-top','0px');
+		}
 		$slider.find('span').addClass('bnSliderHandle');
 		
 		return $slider;
@@ -78,11 +88,15 @@ function ( qlik, $) {
 		var $inputBox = $(createElement('input','bnInput'));
 		$($inputBox).change(function(){ setVariable(layout.var1,$($inputBox).val()); });
 		$($inputBox).attr('value',layout.var1Value);
+		if(layout.ownwidth === true && layout.objectwidth != '') $($inputBox).css('width',layout.objectwidth);
+		
 		return $inputBox;
 	}
 	
 	function createSelect(layout){
 		var $select = createElement('select','bnSelect');
+		if(layout.ownwidth === true && layout.objectwidth != '') $($select).css('width',layout.objectwidth);
+		
 		switch (layout.setvalues){	
 			case "a":
 				var $select = createElement('select','bnSelect');
@@ -153,6 +167,8 @@ function ( qlik, $) {
 		
 		layout.rdMin != '' && layout.restrictdate === true ?  ardMin = layout.rdMin:  ardMin = '';
 		layout.rdMax != '' && layout.restrictdate === true ?  ardMax = layout.rdMax:  ardMax = '';
+		
+		if(layout.ownwidth === true && layout.objectwidth != '') $($calBox).css('width',layout.objectwidth);
 		
 		$($calBox).datepicker(
 			{

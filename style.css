@@ -36,6 +36,10 @@
 	margin-bottom: 5px;
 }
 
+.bnbold{
+	font-weight: bold;
+}
+
 .bnInput{
 	font-family: Arial,Helvetica,sans-serif;
 	font-size: 1em;

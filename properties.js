@@ -193,7 +193,7 @@ function ( qlik, $, $dict, $q) {
 						sa = '{1}'
 					}
 					data.fieldValues = data.fieldValues || {};
-                    data.fieldValues.qStringExpression = "=concat(" + sa + data.concatField +",',')";
+                    data.fieldValues.qStringExpression = "=concat(distinct " + sa + data.concatField +",',')";
 				},
 				show: function(data) {
 					return data.setvalues === "f" || data.setvalues === undefined;
