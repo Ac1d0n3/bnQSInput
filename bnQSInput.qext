@@ -1,0 +1,9 @@
+{
+	"name" : "bnQSInput",
+	"description" : "Input for Vars or Fields",
+	"icon" : "extension",
+	"type" : "visualization",
+	"version": "1.0",
+	"preview" : "",
+	"author": "Thomas Lindackers"
+}
