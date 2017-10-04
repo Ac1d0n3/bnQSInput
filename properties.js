@@ -74,7 +74,7 @@ function ( qlik, $, $dict, $q) {
 						
 				},
 				show: function(data) {
-					return (data.rType === "c" || data.rType === "d") && data.rType !== undefined;
+					return (data.rType === "c" || data.rType === "d" || data.rType === "e") && data.rType !== undefined;
 				}
 			},
 			name: {
@@ -256,7 +256,7 @@ function ( qlik, $, $dict, $q) {
 				label: $dict[lang].commaSepStr,
 				type: "string",
 				change: function(data) {
-					console.log(data.valStr)
+					//console.log(data.valStr)
 				},
 				show: function(data) {
 					return data.setvalues === "c";
