@@ -47,7 +47,7 @@ define( [], function () {
 			restrictSample: "nutze -10 oder -2M 10D oder +1M 5D oder +10",
 			rdMin:"Min Datum",
 			rdMax: "Max Datum",
-			NameLabel: "Bezeichnung für Variable",
+			NameLabel: "Bezeichnung Label",
 			showLabels: "zeige Bezeichnungen",
 			styleType: "Farben aus Vorlage / Hex",
 			ownExpression: "Eigene Formel",

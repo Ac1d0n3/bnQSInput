@@ -74,7 +74,7 @@ function ( qlik, $, $dict, $q) {
 						
 				},
 				show: function(data) {
-					return (data.rType === "c" || data.rType === "d" || data.rType === "e") && data.rType !== undefined;
+					return (data.rType === "d" || data.rType === "e") && data.rType !== undefined;
 				}
 			},
 			name: {
@@ -134,7 +134,7 @@ function ( qlik, $, $dict, $q) {
 					
 				},
 				show: function(data) {
-					return (data.oType === "v" || data.oType === undefined)  && data.sType === 'r' 
+					return  data.sType === 'r' 
 				}
 			},
 			field: {
@@ -338,7 +338,10 @@ function ( qlik, $, $dict, $q) {
 				label: $dict[lang].step,
 				type: "number",
 				defaultValue: 1,
-				expression: "optional"
+				expression: "optional",
+				show: function(data) {
+					return data.oType !== "f";
+				}
 			},
 			rangeLogic: {
 				type: "string",
@@ -377,33 +380,6 @@ function ( qlik, $, $dict, $q) {
 					label: $dict[lang].Off
 				}],
 				defaultValue: true,
-				show: function(data) {
-					return data.oType === "f";
-				}
-			},
-			sdefault1: {
-				ref: "sdefault1",
-				label: $dict[lang].defaultVal +" 1",
-				type: "string",
-				expression: "optional",
-				change: function(data) {
-				  
-				},
-				show: function(data) {
-					return data.oType === "f";
-				}
-			},
-			sdefault2: {
-				ref: "sdefault2",
-				label: $dict[lang].defaultVal +" 2",
-				type: "string",
-				expression: "optional",
-				change: function(data) {
-				  
-				},
-				show: function(data) {
-					return data.sType === "r";
-				},
 				show: function(data) {
 					return data.oType === "f";
 				}
