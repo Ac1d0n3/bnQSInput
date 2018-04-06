@@ -130,7 +130,7 @@ function ( qlik, $) {
 			case "f": 
 			case "c":
 				var aArr = [];
-				layout.setvalues == "f" && layout.fieldValues != '' layout.fieldValues !== undefined ? aArr = layout.fieldValues.split(",") : aArr = layout.valStr.split(",")
+				layout.setvalues == "f" && layout.fieldValues != '' && layout.fieldValues !== undefined ? aArr = layout.fieldValues.split(",") : aArr = layout.valStr.split(",")
 				aArr.forEach(function (element) {
 					var opt = createElement('option', undefined, element);
 					opt.value = element;
