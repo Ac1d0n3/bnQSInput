@@ -16,6 +16,8 @@ Add Values
 Variables must create via Editor in Sense before they can used.
 It's always a good idea to give them default values.
 
+You can change the language in the top of proberties to US or DE
+
 Have Fun
 
 Open for Ideas :)
