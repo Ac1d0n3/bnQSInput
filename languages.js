@@ -6,7 +6,7 @@ define( [], function () {
         'DE': {
 			MainSettings: "Haupteinstellung",
 			Inputbox: "EingabeFeld",
-			Select: "Drobdown Liste",
+			Select: "Dropdown Liste",
 			Button: "Schaltfläche",
 			DatePicker: "Kalenderbox",
 			Slider: "Schiebregler",
@@ -54,7 +54,13 @@ define( [], function () {
 			showLabelsBold: "Bezeichnungen in fett",
 			maxWidthLabel: "breite für das Label",
 			ownWidth: "eigene Breitenangaben",
-			objectWidth: "Objekt Breite"
+			objectWidth: "Objekt Breite",
+			multipleValues: 'mehrfach Selektion',
+			selectSize: "Höhe der Box",
+			useQuotes: 'Anführungszeichen nutzen',
+			useQuotesArt: 'Einfaches oder Doppeltes',
+			useQuotesSingle: 'Einfaches',
+			useQuotesDouble: 'Doppeltes'
 			
 		},
 		'US':{
@@ -104,7 +110,13 @@ define( [], function () {
 			NameLabel: "Bezeichnung für das Label",
 			showLabels: "zeige Bezeichnungen",
 			styleType: "Own Expression",
-			showLabelsBold: "Bezeichnungen in fett"
+			showLabelsBold: "Bezeichnungen in fett",
+			multipleValues: 'multiple selections',
+			selectSize: "box size",
+			useQuotes: 'use quotes',
+			useQuotesArt: 'single or double',
+			useQuotesSingle: 'single',
+			useQuotesDouble: 'double'
 		}
     }
 	

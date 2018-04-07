@@ -58,7 +58,8 @@ function ( qlik, $, $dict, $q) {
 				show: function(data) {
 					return data.rType === "d";
 				}
-			},
+			}
+			/*,
 			outputType: {
 				type: "string",
 				component: "dropdown",
@@ -76,8 +77,9 @@ function ( qlik, $, $dict, $q) {
 				show: function(data) {
 					return (data.rType === "d" || data.rType === "e") && data.rType !== undefined;
 				}
-			},
-			name: {
+			}
+			*/
+			, name: {
 				ref: "var1",
 				type: "string",
 				component: "dropdown",
@@ -159,6 +161,82 @@ function ( qlik, $, $dict, $q) {
 			return data.rType === "b" || data.rType === "c";
 		},
 		items: {
+			multipleValues: {
+				type: "boolean",
+				component: "switch",
+				label:  $dict[lang].multipleValues,
+				ref: "multiplevalues",
+				options: [{
+					value: true,
+					label: $dict[lang].On
+				}, {
+					value: false,
+					label: $dict[lang].Off
+				}],
+				change: function(data) {
+					
+				},
+				defaultValue: true,
+				show: function(data) {
+					return data.rType === "b" ;
+				}
+			},
+			size: {
+				type: "string",
+				component: "dropdown",
+				label: $dict[lang].selectSize,
+				ref: "multisize",
+				options: function(){
+					var array = [];
+					for (var i = 3; i <= 20; i++)
+					array.push({ value: i, label: i })				
+					return array;
+				},
+				defaultValue:3,
+				show: function(data) {
+					return data.multiplevalues === true ;
+				}
+			},
+			useQuotes: {
+				type: "boolean",
+				component: "switch",
+				label: $dict[lang].useQuotes,
+				ref: "usequotes",
+				options: [{
+					value: true,
+					label: $dict[lang].On
+				}, {
+					value: false,
+					label: $dict[lang].Off
+				}],
+				change: function(data) {
+					
+				},
+				defaultValue: false,
+				show: function(data) {
+					return data.multiplevalues === true ;
+				}
+			},
+			useQuotesType: {
+				type: "boolean",
+				component: "switch",
+				label: $dict[lang].useQuotesArt,
+				ref: "singledouble",
+				options: [{
+					value: true,
+					label: $dict[lang].useQuotesSingle
+				}, {
+					value: false,
+					label: $dict[lang].useQuotesDouble
+				}],
+				change: function(data) {
+					
+				},
+				defaultValue: true,
+				show: function(data) {
+					return data.usequotes === true ;
+				}
+			},
 			setValuesWith: {
 				type: "string",
 				component: "dropdown",
@@ -181,7 +259,6 @@ function ( qlik, $, $dict, $q) {
 				}],
 				defaultValue: "f"
 			},
-			
 			concatfield: {
 				ref: "concatField",
 				label: $dict[lang].fieldNameForVal,

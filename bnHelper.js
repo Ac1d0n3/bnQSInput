@@ -4,8 +4,10 @@ function ( qlik, $) {
 	var app = qlik.currApp();
 	
 	function setVariable(name,val){
+		
 		if(!isNaN(val)) app.variable.setNumValue(name, parseFloat(val));
 		else app.variable.setStringValue(name,val);
+		
 	}
 	
 	function setFieldValue(layout,values){
@@ -116,10 +118,19 @@ function ( qlik, $) {
 	
 	function createSelect(layout){
 		var $select = createElement('select','bnSelect');
-		if(layout.ownwidth === true && layout.objectwidth != '') $($select).css('width',layout.objectwidth);
+		var strOpenClose = '';
+		var strSep = ',';
+		
+		if(layout.multiplevalues === true){
+			$($select).attr("multiple" , "");
+			$($select).attr("size" , layout.multisize);
+			$($select).css("display",'block');
+		}
+		if(layout.ownwidth === true && layout.objectwidth != '') 
+			$($select).css('width',layout.objectwidth);
+		
 		switch (layout.setvalues){	
 			case "a":
-				var $select = createElement('select','bnSelect');
 				layout.varvalues.forEach(function (alt) {
 					var opt = createElement('option', undefined, alt.label);
 					opt.value = alt.value;
@@ -140,7 +151,37 @@ function ( qlik, $) {
 				
 			break;
 		}
-		$($select).change(function () { setVariable(layout.var1,this.value); });
+		
+		$($select).on('change',function () { 
+			var varValue = '';
+			if(layout.multiplevalues === true){
+				varValue = strOpenClose+ $($select).val().join( strSep ) +strOpenClose;
+			} else {
+				varValue = this.value;
+			}
+			console.log('setTrigger');
+			setVariable(layout.var1,varValue); 
+		});
+		
+		if(layout.multiplevalues === true){
+			console.log(layout.var1Value);
+			if(layout.usequotes === true) {
+				if(layout.singledouble === true){
+					strOpenClose = "'"; strSep = "','";
+				} else {
+					strOpenClose = '"'; strSep = '","';
+				}
+			}
+			if(layout.var1Value != '' && layout.concatField != ''){
+				for ( var i = 0, l = $select.options.length, o; i < l; i++ ){
+					console.log('selectTrigger');
+				  o = $select.options[i];
+				  if ( layout.var1Value.replace(/['"]+/g, "").split(',').indexOf( o.text ) != -1 ){ o.selected = true; }
+				}
+			}
+		}
+		
+		
 		return $select
 	}
 	
