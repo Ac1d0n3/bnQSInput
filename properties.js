@@ -3,7 +3,7 @@ define(["qlik", "jquery","./languages",'ng!$q'],
 function ( qlik, $, $dict, $q) {
 	'use strict';
 	
-	var lang = 'DE';
+	var lang = 'US';
 
 	var app = qlik.currApp();
 	
