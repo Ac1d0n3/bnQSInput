@@ -3,7 +3,7 @@ define(["qlik", "jquery","./languages",'ng!$q'],
 function ( qlik, $, $dict, $q) {
 	'use strict';
 	
-	var lang = 'US';
+	var lang = 'DE';
 
 	var app = qlik.currApp();
 	
@@ -11,6 +11,20 @@ function ( qlik, $, $dict, $q) {
 		var defer = $q.defer();
 		app.getList( 'VariableList', function ( items ) {
 			defer.resolve( items.qVariableList.qItems.map( function ( item ) {
+					return {
+						value: item.qName,
+						label: item.qName
+					}
+				} )
+			);
+		} );
+		return defer.promise;
+	}
+	
+	var getFieldList = function(){
+		var defer = $q.defer();
+		app.getList( 'FieldList', function ( items ) {
+			defer.resolve( items.qFieldList.qItems.map( function ( item ) {
 					return {
 						value: item.qName,
 						label: item.qName
@@ -161,7 +175,170 @@ function ( qlik, $, $dict, $q) {
 			return data.rType === "b" || data.rType === "c";
 		},
 		items: {
-			multipleValues: {
+			
+			setValuesWith: {
+				type: "string",
+				component: "dropdown",
+				label: $dict[lang].setValuesWith,
+				ref: "setvalues",
+				options: [{
+					value: "f",
+					label: $dict[lang].getFromField
+				}, {
+					value: "a",
+					label: $dict[lang].setAlternative
+				},
+				{
+					value: "c",
+					label: $dict[lang].commaStr
+				},
+				{
+					value: "o",
+					label: $dict[lang].ownExpression
+				}],
+				defaultValue: "f"
+			},
+			getNameFromVar: {
+				type: "boolean",
+				component: "switch",
+				label: $dict[lang].getnamefromvar,
+				ref: "getnamefromvar",
+				options: [{
+					value: true,
+					label: $dict[lang].On
+				}, {
+					value: false,
+					label: $dict[lang].Off
+				}],
+				defaultValue: false,
+				show: function(data) {
+					return data.setvalues === "f" || data.setvalues === undefined;
+				}
+			},
+			concatfield: {
+				ref: "concatField",
+				label: $dict[lang].fieldNameForVal,
+				component: 'dropdown',
+				type: "string",
+				options: function () {
+					return getFieldList().then( function ( items ) {
+						return items;
+					} );
+				},
+				change: function(data) {
+					var sa = '';
+					if(data.alwaysAllValues== true) {
+						sa = '{1}'
+					}
+					data.fieldValues = data.fieldValues || {};
+                    data.fieldValues.qStringExpression = "=concat(distinct " + sa + "[" + data.concatField +"],',')";
+				},
+				show: function(data) {
+					return data.setvalues === "f" && data.getnamefromvar === false  || data.setvalues === undefined;
+				}
+			},
+			concatfieldvar: {
+				ref: "concatFieldvar",
+				label: $dict[lang].fieldNameForVal,
+				component: 'dropdown',
+				type: "string",
+				options: function () {
+					return getVariableList().then( function ( items ) {
+						return items;
+					} );
+				},
+				change: function(data) {
+					var sa = '';
+					if(data.alwaysAllValues== true) {
+						sa = '{1}'
+					}
+					data.fieldValues = data.fieldValues || {};
+                    data.fieldValues.qStringExpression = "=concat(distinct " + sa + "[$(" + data.concatFieldvar +")],',')";
+				},
+				show: function(data) {
+					return data.setvalues === "f" && data.getnamefromvar === true  || data.setvalues === undefined;
+				}
+			},
+			alwaysAllValues: {
+				type: "boolean",
+				component: "switch",
+				label: $dict[lang].alwaysAllVal,
+				ref: "alwaysAllValues",
+				options: [{
+					value: true,
+					label: $dict[lang].On
+				}, {
+					value: false,
+					label: $dict[lang].Off
+				}],
+				change: function(data) {
+					var sa = '';
+					if(data.alwaysAllValues== true) {
+						sa = '{1}'
+					}
+					data.fieldValues = data.fieldValues || {};
+                    data.fieldValues.qStringExpression = "=concat(" + sa + data.concatField +",',')";
+					
+				},
+				defaultValue: true,
+				show: function(data) {
+					return data.setvalues === "f" || data.setvalues === undefined;
+				}
+			},
+			varValueList: {
+				type: "array",
+				ref: "varvalues",
+				label: $dict[lang].varValues,
+				itemTitleRef: "label",
+				allowAdd: true,
+				allowRemove: true,
+				addTranslation: $dict[lang].AddAlternative,
+				items: {
+					value: {
+						type: "string",
+						ref: "value",
+						label: "Value",
+						expression: "optional"
+					},
+					label: {
+						type: "string",
+						ref: "label",
+						label: "Label",
+						expression: "optional"
+					}
+				},
+				show: function(data) {
+					return data.setvalues === "a";
+				}
+			},
+			valueString: {
+				ref: "valStr",
+				label: $dict[lang].commaSepStr,
+				type: "string",
+				change: function(data) {
+					//console.log(data.valStr)
+				},
+				show: function(data) {
+					return data.setvalues === "c";
+				}
+			},
+			protectleadZero: {
+				type: "boolean",
+				component: "switch",
+				label: $dict[lang].protectleadzero,
+				ref: "protectleadzero",
+				options: [{
+					value: true,
+					label: $dict[lang].On
+				}, {
+					value: false,
+					label: $dict[lang].Off
+				}],
+				change: function(data) {
+					
+				},
+				defaultValue: false
+			},multipleValues: {
 				type: "boolean",
 				component: "switch",
 				label:  $dict[lang].multipleValues,
@@ -235,108 +412,6 @@ function ( qlik, $, $dict, $q) {
 				defaultValue: true,
 				show: function(data) {
 					return data.usequotes === true ;
-				}
-			},
-			setValuesWith: {
-				type: "string",
-				component: "dropdown",
-				label: $dict[lang].setValuesWith,
-				ref: "setvalues",
-				options: [{
-					value: "f",
-					label: $dict[lang].getFromField
-				}, {
-					value: "a",
-					label: $dict[lang].setAlternative
-				},
-				{
-					value: "c",
-					label: $dict[lang].commaStr
-				},
-				{
-					value: "o",
-					label: $dict[lang].ownExpression
-				}],
-				defaultValue: "f"
-			},
-			concatfield: {
-				ref: "concatField",
-				label: $dict[lang].fieldNameForVal,
-				type: "string",
-				expression: "optional",
-				change: function(data) {
-					var sa = '';
-					if(data.alwaysAllValues== true) {
-						sa = '{1}'
-					}
-					data.fieldValues = data.fieldValues || {};
-                    data.fieldValues.qStringExpression = "=concat(distinct " + sa + data.concatField +",',')";
-				},
-				show: function(data) {
-					return data.setvalues === "f" || data.setvalues === undefined;
-				}
-			},
-			alwaysAllValues: {
-				type: "boolean",
-				component: "switch",
-				label: $dict[lang].alwaysAllVal,
-				ref: "alwaysAllValues",
-				options: [{
-					value: true,
-					label: $dict[lang].On
-				}, {
-					value: false,
-					label: $dict[lang].Off
-				}],
-				change: function(data) {
-					var sa = '';
-					if(data.alwaysAllValues== true) {
-						sa = '{1}'
-					}
-					data.fieldValues = data.fieldValues || {};
-                    data.fieldValues.qStringExpression = "=concat(" + sa + data.concatField +",',')";
-					
-				},
-				defaultValue: true,
-				show: function(data) {
-					return data.setvalues === "f" || data.setvalues === undefined;
-				}
-			},
-			varValueList: {
-				type: "array",
-				ref: "varvalues",
-				label: $dict[lang].varValues,
-				itemTitleRef: "label",
-				allowAdd: true,
-				allowRemove: true,
-				addTranslation: $dict[lang].AddAlternative,
-				items: {
-					value: {
-						type: "string",
-						ref: "value",
-						label: "Value",
-						expression: "optional"
-					},
-					label: {
-						type: "string",
-						ref: "label",
-						label: "Label",
-						expression: "optional"
-					}
-				},
-				show: function(data) {
-					return data.setvalues === "a";
-				}
-			},
-			valueString: {
-				ref: "valStr",
-				label: $dict[lang].commaSepStr,
-				type: "string",
-				change: function(data) {
-					//console.log(data.valStr)
-				},
-				show: function(data) {
-					return data.setvalues === "c";
 				}
 			}
 		}

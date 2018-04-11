@@ -1,12 +1,15 @@
 define(["qlik","jquery","jqueryui"], 	
-function ( qlik, $) {
+function ( qlik, $, sumoselct) {
     'use strict';
 	var app = qlik.currApp();
 	
-	function setVariable(name,val){
-		
-		if(!isNaN(val)) app.variable.setNumValue(name, parseFloat(val));
-		else app.variable.setStringValue(name,val);
+	function setVariable(name,val,useString = false){
+		if(useString === true){
+			app.variable.setStringValue(name,val);
+		} else {
+			if(!isNaN(val)) app.variable.setNumValue(name, parseFloat(val));
+			else app.variable.setStringValue(name,val);
+		}
 		
 	}
 	
@@ -125,6 +128,13 @@ function ( qlik, $) {
 			$($select).attr("multiple" , "");
 			$($select).attr("size" , layout.multisize);
 			$($select).css("display",'block');
+			if(layout.usequotes === true) {
+				if(layout.singledouble === true){
+					strOpenClose = "'"; strSep = "','";
+				} else {
+					strOpenClose = '"'; strSep = '","';
+				}
+			}
 		}
 		if(layout.ownwidth === true && layout.objectwidth != '') 
 			$($select).css('width',layout.objectwidth);
@@ -134,7 +144,14 @@ function ( qlik, $) {
 				layout.varvalues.forEach(function (alt) {
 					var opt = createElement('option', undefined, alt.label);
 					opt.value = alt.value;
-					opt.selected = alt.value === layout.var1Value;
+					if((layout.multiplevalues === true && layout.var1Value.replace(/['"]+/g, "").split(',').indexOf( alt.value ) != -1) || alt.value  === layout.var1Value) {
+						$(opt).attr("checked","checked"); 
+						$(opt).addClass('bactive');
+						if(layout.multiplevalues === false) {
+							$(opt).css("display","none");
+							$(opt).attr("selected","selected"); 
+						}
+					}
 					$select.appendChild(opt);
 				});
 			break;
@@ -145,7 +162,15 @@ function ( qlik, $) {
 				aArr.forEach(function (element) {
 					var opt = createElement('option', undefined, element);
 					opt.value = element;
-					opt.selected = element === layout.var1Value;
+					if((layout.multiplevalues === true && layout.var1Value.replace(/['"]+/g, "").split(',').indexOf( element ) != -1) || element === layout.var1Value) {
+						$(opt).attr("checked","checked"); 
+						$(opt).addClass('bactive');
+						if(layout.multiplevalues === false) {
+							
+							$(opt).attr("selected","selected"); 
+							$(opt).css("display","none");
+						}
+					}
 					$select.appendChild(opt);
 				});
 				
@@ -159,29 +184,8 @@ function ( qlik, $) {
 			} else {
 				varValue = this.value;
 			}
-			console.log('setTrigger');
-			setVariable(layout.var1,varValue); 
+			setVariable(layout.var1,varValue,layout.protectleadzero); 
 		});
-		
-		if(layout.multiplevalues === true){
-			console.log(layout.var1Value);
-			if(layout.usequotes === true) {
-				if(layout.singledouble === true){
-					strOpenClose = "'"; strSep = "','";
-				} else {
-					strOpenClose = '"'; strSep = '","';
-				}
-			}
-			if(layout.var1Value != '' && layout.concatField != ''){
-				for ( var i = 0, l = $select.options.length, o; i < l; i++ ){
-					console.log('selectTrigger');
-				  o = $select.options[i];
-				  if ( layout.var1Value.replace(/['"]+/g, "").split(',').indexOf( o.text ) != -1 ){ o.selected = true; }
-				}
-			}
-		}
-		
-		
 		return $select
 	}
 	

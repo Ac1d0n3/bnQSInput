@@ -6,7 +6,7 @@ define( [], function () {
         'DE': {
 			MainSettings: "Haupteinstellung",
 			Inputbox: "EingabeFeld",
-			Select: "Dropdown Liste",
+			Select: "Dropdown / Select",
 			Button: "Schaltfläche",
 			DatePicker: "Kalenderbox",
 			Slider: "Schiebregler",
@@ -26,7 +26,7 @@ define( [], function () {
 			getFromField: "hole Werte aus Feld",
 			setAlternative: "eigene Werte",
 			commaStr: "nutze Kommaseper. Text",
-			fieldNameForVal: "Feldname für die Werte",
+			fieldNameForVal: "Feldname",
 			alwaysAllVal: "immer alle Werte nutzen",
 			On: "Ein",
 			Off: "Aus",
@@ -60,7 +60,9 @@ define( [], function () {
 			useQuotes: 'Anführungszeichen nutzen',
 			useQuotesArt: 'Einfaches oder Doppeltes',
 			useQuotesSingle: 'Einfaches',
-			useQuotesDouble: 'Doppeltes'
+			useQuotesDouble: 'Doppeltes',
+			protectleadzero: 'führende Nullen schützen',
+			getnamefromvar: 'Feldname aus Variable'
 			
 		},
 		'US':{
@@ -116,7 +118,9 @@ define( [], function () {
 			useQuotes: 'use quotes',
 			useQuotesArt: 'single or double',
 			useQuotesSingle: 'single',
-			useQuotesDouble: 'double'
+			useQuotesDouble: 'double',
+			protectleadzero: 'protect leading zeros',
+			getnamefromvar: 'Name comes from other var'
 		}
     }
 	
