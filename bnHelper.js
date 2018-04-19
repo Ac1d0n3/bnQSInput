@@ -3,7 +3,7 @@ function ( qlik, $, sumoselct) {
     'use strict';
 	var app = qlik.currApp();
 	
-	function setVariable(name,val,useString = false){
+	function setVariable(name,val,useString){
 		if(useString === true){
 			app.variable.setStringValue(name,val);
 		} else {
