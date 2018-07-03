@@ -1,4 +1,4 @@
-define(["qlik","jquery","jqueryui"], 	
+define(["qlik","jquery","./jquery-ui.min"], 	
 function ( qlik, $, sumoselct) {
     'use strict';
 	var app = qlik.currApp();

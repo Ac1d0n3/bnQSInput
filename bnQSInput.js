@@ -1,4 +1,4 @@
-define(["qlik", "./properties", "./initialProps","./bnHelper","jquery","jqueryui"], 
+define(["qlik", "./properties", "./initialProps","./bnHelper","jquery","./jquery-ui.min"], 
 function ( qlik, props, initProps, bnHelper, $) {
     'use strict';
 	return {
