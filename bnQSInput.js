@@ -1,4 +1,4 @@
-define(["qlik", "./properties", "./initialProps","./bnHelper","jquery","./jquery-ui.min"], 
+define(["qlik", "./properties", "./initialProps","./bnHelper","jquery"], 
 function ( qlik, props, initProps, bnHelper, $) {
     'use strict';
 	return {
@@ -7,7 +7,7 @@ function ( qlik, props, initProps, bnHelper, $) {
         paint: function ( $element , layout ) {
 			
             bnHelper.addStyleSheet("extensions/bnQSInput/style.css");
-			//$element.empty();
+			$element.empty();
 			
 			
 			var $output = $(bnHelper.createElement('div', 'bnContainer'));
@@ -20,7 +20,7 @@ function ( qlik, props, initProps, bnHelper, $) {
 				case 'd': $output.append(bnHelper.createSlider(layout));	break;
 				case 'e': $output.append(bnHelper.createCalBox(layout));	break;
 			}
-			$element.html( $output );
+			$element.append( $output );
         }
 	}
 });

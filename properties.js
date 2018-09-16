@@ -1,12 +1,12 @@
-define(["qlik", "jquery","./languages",'ng!$q'], 
-	
+define(["qlik", "jquery","./languages",'ng!$q'],
+
 function ( qlik, $, $dict, $q) {
 	'use strict';
-	
-	var lang = 'DE';
+
+	var lang = 'US';
 
 	var app = qlik.currApp();
-	
+
 	var getVariableList = function(){
 		var defer = $q.defer();
 		app.getList( 'VariableList', function ( items ) {
@@ -20,7 +20,7 @@ function ( qlik, $, $dict, $q) {
 		} );
 		return defer.promise;
 	}
-	
+
 	var getFieldList = function(){
 		var defer = $q.defer();
 		app.getList( 'FieldList', function ( items ) {
@@ -34,8 +34,8 @@ function ( qlik, $, $dict, $q) {
 		} );
 		return defer.promise;
 	}
-	
-	
+
+
 	var MainSettings = {
 		type: "items",
 		label: $dict[lang].MainSettings,
@@ -45,10 +45,10 @@ function ( qlik, $, $dict, $q) {
 				component: "dropdown",
 				label: "Type",
 				ref: "rType",
-				options: [ 
-					{ value: "a", label: $dict[lang].Inputbox }, 
+				options: [
+					{ value: "a", label: $dict[lang].Inputbox },
 					{ value: "b", label: $dict[lang].Select },
-					{ value: "c", label: $dict[lang].Button }, 
+					{ value: "c", label: $dict[lang].Button },
 					{ value: "d", label: $dict[lang].Slider},
 					{ value: "e", label: $dict[lang].DatePicker}
 				],
@@ -65,7 +65,7 @@ function ( qlik, $, $dict, $q) {
 				label: $dict[lang].SliderType,
 				ref: "sType",
 				options: [
-					{ value: "s", label: $dict[lang].SliderTypeA }, 
+					{ value: "s", label: $dict[lang].SliderTypeA },
 					{ value: "r", label: $dict[lang].SliderTypeB }
 				],
 				defaultValue: "s",
@@ -79,14 +79,14 @@ function ( qlik, $, $dict, $q) {
 				component: "dropdown",
 				label: "use Input for ",
 				ref: "oType",
-				options: [ 
-					{ value: "v", label: $dict[lang].Variable }, 
+				options: [
+					{ value: "v", label: $dict[lang].Variable },
 					{ value: "f", label: $dict[lang].Field }
 				],
 				defaultValue: "v",
 				change: function(data){
 					data.oType === "v" ? data.useForMinMax = "a":  data.useForMinMax = "d";
-						
+
 				},
 				show: function(data) {
 					return (data.rType === "d" || data.rType === "e") && data.rType !== undefined;
@@ -117,7 +117,7 @@ function ( qlik, $, $dict, $q) {
 				type: "string",
 				expression: "optional",
 				change: function(data) {
-					
+
 				},
 				show: function(data) {
 					return data.rType !== "c";
@@ -147,10 +147,10 @@ function ( qlik, $, $dict, $q) {
 				type: "string",
 				expression: "optional",
 				change: function(data) {
-					
+
 				},
 				show: function(data) {
-					return  data.sType === 'r' 
+					return  data.sType === 'r'
 				}
 			},
 			field: {
@@ -159,7 +159,7 @@ function ( qlik, $, $dict, $q) {
 				type: "string",
 				expression: "optional",
 				change: function(data) {
-					
+
 				},
 				show: function(data) {
 					return data.oType === "f";
@@ -167,7 +167,7 @@ function ( qlik, $, $dict, $q) {
 			}
 		}
 	};
-	
+
 	var ValueSettings = {
 		type: "items",
 		label: $dict[lang].ValueSettings,
@@ -175,7 +175,7 @@ function ( qlik, $, $dict, $q) {
 			return data.rType === "b" || data.rType === "c";
 		},
 		items: {
-			
+
 			setValuesWith: {
 				type: "string",
 				component: "dropdown",
@@ -278,7 +278,7 @@ function ( qlik, $, $dict, $q) {
 					}
 					data.fieldValues = data.fieldValues || {};
                     data.fieldValues.qStringExpression = "=concat(" + sa + data.concatField +",',')";
-					
+
 				},
 				defaultValue: true,
 				show: function(data) {
@@ -335,7 +335,7 @@ function ( qlik, $, $dict, $q) {
 					label: $dict[lang].Off
 				}],
 				change: function(data) {
-					
+
 				},
 				defaultValue: false
 			},multipleValues: {
@@ -351,7 +351,7 @@ function ( qlik, $, $dict, $q) {
 					label: $dict[lang].Off
 				}],
 				change: function(data) {
-					
+
 				},
 				defaultValue: true,
 				show: function(data) {
@@ -366,7 +366,7 @@ function ( qlik, $, $dict, $q) {
 				options: function(){
 					var array = [];
 					for (var i = 3; i <= 20; i++)
-					array.push({ value: i, label: i })				
+					array.push({ value: i, label: i })
 					return array;
 				},
 				defaultValue:3,
@@ -387,7 +387,7 @@ function ( qlik, $, $dict, $q) {
 					label: $dict[lang].Off
 				}],
 				change: function(data) {
-					
+
 				},
 				defaultValue: false,
 				show: function(data) {
@@ -407,7 +407,7 @@ function ( qlik, $, $dict, $q) {
 					label: $dict[lang].useQuotesDouble
 				}],
 				change: function(data) {
-					
+
 				},
 				defaultValue: true,
 				show: function(data) {
@@ -416,7 +416,7 @@ function ( qlik, $, $dict, $q) {
 			}
 		}
 	};
-	
+
 	var SliderSettings = {
 		type: "items",
 		label: $dict[lang].SliderSettings,
@@ -538,7 +538,7 @@ function ( qlik, $, $dict, $q) {
 			}
 		}
 	}
-	
+
 	var DatePickerSettings = {
 		type: "items",
 		label: $dict[lang].DatePickerSettings,
@@ -586,10 +586,10 @@ function ( qlik, $, $dict, $q) {
 					label: $dict[lang].Off
 				}],
 				change: function(data) {
-				
+
 				},
 				defaultValue: true
-				
+
 			},
 			showButtonPanel: {
 				type: "boolean",
@@ -604,10 +604,10 @@ function ( qlik, $, $dict, $q) {
 					label: $dict[lang].Off
 				}],
 				change: function(data) {
-				
+
 				},
 				defaultValue: true
-				
+
 			},
 			restrictDate: {
 				type: "boolean",
@@ -622,10 +622,10 @@ function ( qlik, $, $dict, $q) {
 					label: $dict[lang].Off
 				}],
 				change: function(data) {
-				
+
 				},
 				defaultValue: true
-				
+
 			},
 			vrHelp: {
 				label: $dict[lang].restrictSample,
@@ -639,7 +639,7 @@ function ( qlik, $, $dict, $q) {
 				label: $dict[lang].rdMin,
 				type: "string",
 				change: function(data) {
-				  
+
 				},
 				show: function(data) {
 					return data.restrictdate === true;
@@ -650,16 +650,16 @@ function ( qlik, $, $dict, $q) {
 				label: $dict[lang].rdMax,
 				type: "string",
 				change: function(data) {
-				  
+
 				},
 				show: function(data) {
 					return data.restrictdate === true;
 				}
 			}
-			
+
 		}
 	}
-	
+
 	var StyleSettings = {
 		type: "items",
 		label: $dict[lang].astyle,
@@ -677,13 +677,13 @@ function ( qlik, $, $dict, $q) {
 					label: $dict[lang].Off
 				}],
 				change: function(data) {
-				
+
 				},
 				show: function(data) {
 					return data.rType !== "c";
 				},
 				defaultValue: true
-				
+
 			},
 			LabelsBold: {
 				type: "boolean",
@@ -698,13 +698,13 @@ function ( qlik, $, $dict, $q) {
 					label: $dict[lang].Off
 				}],
 				change: function(data) {
-				
+
 				},
 				show: function(data) {
 					return data.showvarlabels === true;
 				},
 				defaultValue: true
-				
+
 			},
 			ownWidth: {
 				type: "boolean",
@@ -719,20 +719,20 @@ function ( qlik, $, $dict, $q) {
 					label: $dict[lang].Off
 				}],
 				change: function(data) {
-				
+
 				},
 				show: function(data) {
 					return data.rType !== "c";
 				},
 				defaultValue: true
-				
+
 			},
 			labelWidth: {
 				ref: "labelwidth",
 				label: $dict[lang].maxWidthLabel,
 				type: "string",
 				change: function(data) {
-				  
+
 				},
 				show: function(data) {
 					return data.showvarlabels === true &&  data.ownwidth === true;
@@ -743,13 +743,13 @@ function ( qlik, $, $dict, $q) {
 				label: $dict[lang].objectWidth,
 				type: "string",
 				change: function(data) {
-				  
+
 				},
 				show: function(data) {
 					return  data.ownwidth === true;
 				}
 			},
-			
+
 			styleType: {
 				type: "string",
 				component: "dropdown",
@@ -769,7 +769,7 @@ function ( qlik, $, $dict, $q) {
 				label: "Highlight Background",
 				type: "string",
 				change: function(data) {
-				  
+
 				},
 				show: function(data) {
 					return data.styleType === "b";
@@ -780,15 +780,15 @@ function ( qlik, $, $dict, $q) {
 				label: "Highlight Font",
 				type: "string",
 				change: function(data) {
-				  
+
 				},
 				show: function(data) {
 					return data.styleType === "b";
 				}
 			}
-		}	
+		}
 	};
-	
+
 	var HelpInfo = {
 		type: "items",
 		label: $dict[lang].info,
@@ -838,7 +838,7 @@ function ( qlik, $, $dict, $q) {
 			}
 		}
 	}
-	
+
 	var bnQSInputProps = {
 		//type: "items", //<== not necessary to define "items"
 		component: "expandable-items",
@@ -852,7 +852,7 @@ function ( qlik, $, $dict, $q) {
 			 , bnQSInputHelp: HelpInfo
 		}
 	};
- 
+
 	var Settings = {
 		uses: "settings",
 		items: {
@@ -866,13 +866,13 @@ function ( qlik, $, $dict, $q) {
 		}
 	}
 	return {
-		
+
 		type: "items",
 		component: "accordion",
 		items: {
 			cSection: bnQSInputProps,
 			settings: Settings
-			
+
 		}
 	};
 
