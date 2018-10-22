@@ -11,11 +11,11 @@ function ( qlik, $, $dict, $q) {
 		var defer = $q.defer();
 		app.getList( 'VariableList', function ( items ) {
 			defer.resolve( items.qVariableList.qItems.map( function ( item ) {
-					return {
-						value: item.qName,
-						label: item.qName
+				return {
+					value: item.qName,
+					label: item.qName
 					}
-				} )
+			} )
 			);
 		} );
 		return defer.promise;

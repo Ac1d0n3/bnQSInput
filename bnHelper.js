@@ -1,10 +1,10 @@
 
 
-define(["qlik","jquery","./jquery-ui.min.js"], 	
+define(["qlik","jquery"], 	
 function ( qlik, $) {
     'use strict';
 	var app = qlik.currApp();
-	
+
 	function setVariable(name,val,useString){
 		if(useString === true){
 			app.variable.setStringValue(name,val);
@@ -12,9 +12,9 @@ function ( qlik, $) {
 			if(!isNaN(val)) app.variable.setNumValue(name, parseFloat(val));
 			else app.variable.setStringValue(name,val);
 		}
-		
+
 	}
-	
+
 	function setFieldValue(layout,values){
 		var srcStr = '';
 		if(layout.reverseSlider === true) {
@@ -33,25 +33,25 @@ function ( qlik, $) {
 			}
 		}
 		app.field(layout.fName).selectMatch(srcStr, true);
-		
+
 	}
-	
+
     function createElement(tag, cls, html) {
         var el = document.createElement(tag);
         if (cls) { el.className = cls; }
         if (html !== undefined) { el.innerHTML = html; }
         return el;
     }
-	
+
 	function addStyleSheet(href) {
 		var link = createElement('link'); link.rel = "stylesheet"; link.type = "text/css"; link.href = require.toUrl(href); document.head.appendChild(link);
 	}
-	
+
     function setChild(el, ch) {
-        if (el.childNodes.length === 0) { el.appendChild(ch); } 
+        if (el.childNodes.length === 0) { el.appendChild(ch); }
 		else { el.replaceChild(ch, el.childNodes[0]); }
     }
-	
+
 	function createLabel(layout){
 		if(layout.showvarlabels === true && layout.rType !== 'c'){
 			var nClass;
@@ -70,19 +70,19 @@ function ( qlik, $) {
 			return $label;
 		} else return '';
 	}
-	
+
 	function createSlider(layout){
-		
+
 		switch (layout.sType){
 			case 's':
-				var sliderSettings = { 
+				var sliderSettings = {
 					min: layout.min,
 					max: layout.max,
 					step: layout.step,
 					value: layout.var1Value.replace(',','.'),
 					stop: function( event, ui ) {
 						setVariable(layout.var1,ui.value)
-						
+
 					}
 				};
 			break;
@@ -96,14 +96,14 @@ function ( qlik, $) {
 					stop: function( event, ui ) {
 						if(layout.oType == 'f') {
 							setFieldValue(layout,ui.values)
-						} 
+						}
 						setVariable(layout.var1,ui.values[0]);
 						setVariable(layout.var2,ui.values[1]);
-						
+
 					}
 				};
 			break;
-		}	
+		}
 		var $slider = $(createElement('div', 'bnSliderDiv')).slider(sliderSettings);
 		if(layout.showvarlabels === true){
 			$($slider).css('margin-top','0px');
@@ -111,21 +111,21 @@ function ( qlik, $) {
 		$slider.find('span').addClass('bnSliderHandle');
 		return $slider;
 	}
-	
+
 	function createInput(layout){
 		var $inputBox = $(createElement('input','bnInput'));
-		$($inputBox).change(function(){ 
-			setVariable(layout.var1,$($inputBox).val()); 
+		$($inputBox).change(function(){
+			setVariable(layout.var1,$($inputBox).val());
 		}).attr('value',layout.var1Value);
 		if(layout.ownwidth === true && layout.objectwidth != '') $($inputBox).css('width',layout.objectwidth);
 		return $inputBox;
 	}
-	
+
 	function createSelect(layout){
 		var $select = createElement('select','bnSelect');
 		var strOpenClose = '';
 		var strSep = ',';
-		
+
 		if(layout.multiplevalues === true){
 			$($select).attr("multiple" , "");
 			$($select).attr("size" , layout.multisize);
@@ -138,26 +138,26 @@ function ( qlik, $) {
 				}
 			}
 		}
-		if(layout.ownwidth === true && layout.objectwidth != '') 
+		if(layout.ownwidth === true && layout.objectwidth != '')
 			$($select).css('width',layout.objectwidth);
-		
-		switch (layout.setvalues){	
+
+		switch (layout.setvalues){
 			case "a":
 				layout.varvalues.forEach(function (alt) {
 					var opt = createElement('option', undefined, alt.label);
 					opt.value = alt.value;
 					if((layout.multiplevalues === true && layout.var1Value.replace(/['"]+/g, "").split(',').indexOf( alt.value ) != -1) || alt.value  === layout.var1Value) {
-						$(opt).attr("checked","checked"); 
+						$(opt).attr("checked","checked");
 						$(opt).addClass('bactive');
 						if(layout.multiplevalues === false) {
 							$(opt).css("display","none");
-							$(opt).attr("selected","selected"); 
+							$(opt).attr("selected","selected");
 						}
 					}
 					$select.appendChild(opt);
 				});
 			break;
-			case "f": 
+			case "f":
 			case "c":
 				var aArr = [];
 				layout.setvalues == "f" && layout.fieldValues != '' && layout.fieldValues !== undefined ? aArr = layout.fieldValues.split(",") : aArr = layout.valStr.split(",")
@@ -165,32 +165,32 @@ function ( qlik, $) {
 					var opt = createElement('option', undefined, element);
 					opt.value = element;
 					if((layout.multiplevalues === true && layout.var1Value.replace(/['"]+/g, "").split(',').indexOf( element ) != -1) || element === layout.var1Value) {
-						$(opt).attr("checked","checked"); 
+						$(opt).attr("checked","checked");
 						$(opt).addClass('bactive');
 						if(layout.multiplevalues === false) {
-							
-							$(opt).attr("selected","selected"); 
+
+							$(opt).attr("selected","selected");
 							$(opt).css("display","none");
 						}
 					}
 					$select.appendChild(opt);
 				});
-				
+
 			break;
 		}
-		
-		$($select).on('change',function () { 
+
+		$($select).on('change',function () {
 			var varValue = '';
 			if(layout.multiplevalues === true){
 				varValue = strOpenClose+ $($select).val().join( strSep ) +strOpenClose;
 			} else {
 				varValue = this.value;
 			}
-			setVariable(layout.var1,varValue,layout.protectleadzero); 
+			setVariable(layout.var1,varValue,layout.protectleadzero);
 		});
 		return $select
 	}
-	
+
 	function createButton(layout){
 		var $buttons = createElement('div');
 		switch (layout.setvalues){
@@ -203,7 +203,7 @@ function ( qlik, $) {
 					$buttons.appendChild($button);
 				});
 			break;
-			case "f": 
+			case "f":
 			case "c":
 				var aArr = [];
 				layout.setvalues == "f" && layout.fieldValues != '' ? aArr = layout.fieldValues.split(",") : aArr = layout.valStr.split(",")
@@ -214,14 +214,14 @@ function ( qlik, $) {
 					$($button).attr('value',element).click(function () { setVariable(layout.var1,this.value); });
 					$buttons.appendChild($button);
 				});
-				
+
 			break;
 		}
 		return $buttons
 	}
-	
+
 	function createCalBox(layout){
-		var aNumber = 1; var ardMin = ''; var ardMax = ''; 
+		var aNumber = 1; var ardMin = ''; var ardMax = '';
 		var $calBox = createElement('input','bnInput');
 		layout.multimonth === true ?  aNumber = 3:  aNumber = 1;
 		layout.rdMin != '' && layout.restrictdate === true ?  ardMin = layout.rdMin:  ardMin = '';
@@ -237,7 +237,7 @@ function ( qlik, $) {
 		).attr('value',layout.var1Value);
 		return $calBox;
 	}
-	
+
     return {
         createElement: createElement
         , setChild: setChild
